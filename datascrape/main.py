@@ -1,6 +1,32 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import psycopg2
+from psycopg2 import sql
+
+def create_table(conn):
+    with conn.cursor() as cur:
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS design (
+                id SERIAL PRIMARY KEY,
+                artist TEXT,
+                price TEXT,
+                description TEXT,
+                image_url TEXT
+            )
+        """)
+    conn.commit()
+
+def insert_data(conn, data):
+    with conn.cursor() as cur:
+        cur.execute(
+            sql.SQL("""
+                INSERT INTO design (artist, price, description, image_url)
+                VALUES (%s, %s, %s, %s)
+            """),
+            (data['artist'], data['price'], data['description'], data['image'])
+        )
+    conn.commit()
 
 def get_soup(url):
     response = requests.get(url)
@@ -31,33 +57,49 @@ def scrape_listing_page(url):
     return {'artist': artist, 'price': priceDiv, 'description': description, 'image': image}
 
 def main():
-    main_url = 'https://www.bukowskis.com/news/1671'
+    # Database connection parameters
+    db_params = {
+        'dbname': 'postgres',
+        'user': 'postgres',
+        'password': 'postgres',
+        'host': '172.29.208.1',
+        'port': '5432'
+    }
+
+    # Connect to the database
+    conn = psycopg2.connect(**db_params)
+
+    # Create the table if it doesn't exist
+    create_table(conn)
+
+    main_url = 'https://www.bukowskis.com/news/1675'
     main_soup = get_soup(main_url)
     
-    # Find all listing divs on the main page
     listing_divs = main_soup.find_all('div', class_='c-lot-index-lot')
     
-    all_listings_data = []
     for div in listing_divs:
         link = div.find('a', class_='c-lot-index-lot__link')
         if link:
             listing_url = 'https://www.bukowskis.com' + link['href']
             print(f"Scraping: {listing_url}")
             listing_data = scrape_listing_page(listing_url)
-            all_listings_data.append(listing_data)
             
-            # Print data for each listing
+            # Insert data into the database
+            insert_data(conn, listing_data)
+            
             print("\nListing Data:")
-            print(f"Artist: {listing_data['artist']}")
+            print(f"artist: {listing_data['artist']}")
             print(f"Price: {listing_data['price']}")
             print(f"Description: {listing_data['description']}")
             print(f"Image URL: {listing_data['image']}")
             print("-" * 50)
-
-            time.sleep(1)
+            
+            time.sleep(0.3)
     
-    # Print summary
-    print(f"\nTotal listings scraped: {len(all_listings_data)}")
+    # Close the database connection
+    conn.close()
+    
+    print(f"\nTotal listings scraped: {len(listing_divs)}")
 
 if __name__ == '__main__':
     main()
