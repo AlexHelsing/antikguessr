@@ -1,4 +1,4 @@
-public class Klockor {
+public class Konst {
     public int id {get; set;}
     public required string artist {get; set;}
 

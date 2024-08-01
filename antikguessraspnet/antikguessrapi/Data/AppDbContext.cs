@@ -7,11 +7,14 @@ public class AppDbContext : DbContext
     public DbSet<Klockor> Klockor { get; set; }
     public DbSet<Design> Design { get; set; }
     public DbSet<GlasOchKeramik> GlasOchKeramik { get; set; }
+    public DbSet<Konst> Konst { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Klockor>().ToTable("klockor");
         modelBuilder.Entity<Design>().ToTable("design");
         modelBuilder.Entity<GlasOchKeramik>().ToTable("glasochkeramik");
+        modelBuilder.Entity<Konst>().ToTable("konst");
     }
 }

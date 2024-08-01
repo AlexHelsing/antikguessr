@@ -7,7 +7,7 @@ from psycopg2 import sql
 def create_table(conn):
     with conn.cursor() as cur:
         cur.execute("""
-            CREATE TABLE IF NOT EXISTS klockor (
+            CREATE TABLE IF NOT EXISTS konst (
                 id SERIAL PRIMARY KEY,
                 artist TEXT,
                 price INTEGER,
@@ -22,7 +22,7 @@ def insert_data(conn, data):
         with conn.cursor() as cur:
             cur.execute(
                 sql.SQL("""
-                    INSERT INTO klockor (artist, price, description, image_url)
+                    INSERT INTO konst (artist, price, description, image_url)
                     VALUES (%s, %s, %s, %s)
                 """),
                 (data['artist'], data['price'], data['description'], data['image'])
@@ -77,7 +77,7 @@ def main():
     # Create the table if it doesn't exist
     create_table(conn)
 
-    main_url = 'https://www.bukowskis.com/sv/news/1670'
+    main_url = 'https://www.bukowskis.com/news/1671'
     main_soup = get_soup(main_url)
     
     listing_divs = main_soup.find_all('div', class_='c-lot-index-lot')
@@ -100,7 +100,7 @@ def main():
             else:
                 print(f"Skipping listing due to missing price: {listing_url}")
             
-            time.sleep(1)
+            time.sleep(0.3)
     
     # Close the database connection
     conn.close()
