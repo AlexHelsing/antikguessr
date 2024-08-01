@@ -7,10 +7,10 @@ from psycopg2 import sql
 def create_table(conn):
     with conn.cursor() as cur:
         cur.execute("""
-            CREATE TABLE IF NOT EXISTS design (
+            CREATE TABLE IF NOT EXISTS klockor (
                 id SERIAL PRIMARY KEY,
                 artist TEXT,
-                price TEXT,
+                price INTEGER,
                 description TEXT,
                 image_url TEXT
             )
@@ -18,15 +18,18 @@ def create_table(conn):
     conn.commit()
 
 def insert_data(conn, data):
-    with conn.cursor() as cur:
-        cur.execute(
-            sql.SQL("""
-                INSERT INTO design (artist, price, description, image_url)
-                VALUES (%s, %s, %s, %s)
-            """),
-            (data['artist'], data['price'], data['description'], data['image'])
-        )
-    conn.commit()
+    if data['price'] is not None:
+        with conn.cursor() as cur:
+            cur.execute(
+                sql.SQL("""
+                    INSERT INTO klockor (artist, price, description, image_url)
+                    VALUES (%s, %s, %s, %s)
+                """),
+                (data['artist'], data['price'], data['description'], data['image'])
+            )
+        conn.commit()
+    else:
+        print(f"Skipping item with artist '{data['artist']}' due to missing price.")
 
 def get_soup(url):
     response = requests.get(url)
@@ -41,8 +44,10 @@ def scrape_listing_page(url):
 
     try:
         priceDiv = soup.find('div', class_='c-live-lot-show-info__final-price-amount').text.strip()
-    except AttributeError:
-        priceDiv = "Price not found"
+        # Remove non-digit characters and convert to integer
+        price = int(''.join(filter(str.isdigit, priceDiv)))
+    except (AttributeError, ValueError):
+        price = None  # Use None instead of "Price not found"
 
     try:
         description = soup.find('div', class_='c-lot-description').text.strip()
@@ -54,7 +59,7 @@ def scrape_listing_page(url):
     except (AttributeError, KeyError):
         image = "Image not found"
 
-    return {'artist': artist, 'price': priceDiv, 'description': description, 'image': image}
+    return {'artist': artist, 'price': price, 'description': description, 'image': image}
 
 def main():
     # Database connection parameters
@@ -72,7 +77,7 @@ def main():
     # Create the table if it doesn't exist
     create_table(conn)
 
-    main_url = 'https://www.bukowskis.com/news/1675'
+    main_url = 'https://www.bukowskis.com/sv/news/1670'
     main_soup = get_soup(main_url)
     
     listing_divs = main_soup.find_all('div', class_='c-lot-index-lot')
@@ -84,17 +89,18 @@ def main():
             print(f"Scraping: {listing_url}")
             listing_data = scrape_listing_page(listing_url)
             
-            # Insert data into the database
-            insert_data(conn, listing_data)
+            if listing_data['price'] is not None:
+                insert_data(conn, listing_data)
+                print("\nListing Data:")
+                print(f"Artist: {listing_data['artist']}")
+                print(f"Price: {listing_data['price']}")
+                print(f"Description: {listing_data['description'][:100]}...")  # Print first 100 characters of description
+                print(f"Image URL: {listing_data['image']}")
+                print("-" * 50)
+            else:
+                print(f"Skipping listing due to missing price: {listing_url}")
             
-            print("\nListing Data:")
-            print(f"artist: {listing_data['artist']}")
-            print(f"Price: {listing_data['price']}")
-            print(f"Description: {listing_data['description']}")
-            print(f"Image URL: {listing_data['image']}")
-            print("-" * 50)
-            
-            time.sleep(0.3)
+            time.sleep(1)
     
     # Close the database connection
     conn.close()
