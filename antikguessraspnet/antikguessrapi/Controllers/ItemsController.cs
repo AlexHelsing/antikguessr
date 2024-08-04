@@ -7,7 +7,7 @@ public class ItemsController : ControllerBase
 {
     private readonly AppDbContext _context;
 
-    // For creating random number
+    // Get random number. Instead of creating a new "random" for every fetch, use this one.
     static Random random = new Random();
 
     public ItemsController(AppDbContext context)
@@ -58,15 +58,15 @@ public class ItemsController : ControllerBase
 
         return randomKlocka;
     }
-// Similar endpoints for Design and GlasOchKeramik
-
+    
+    // Returns all designs
     [HttpGet("design")]
     public async Task<ActionResult<IEnumerable<Design>>> GetDesign()
     {
         return await _context.Design.ToListAsync();
     }
 
-        // For getting specific watch by id
+    // For getting specific watch by id
     [HttpGet("design/{id}")]
     public async Task<ActionResult<Design>> GetDesign(int id)
     {
@@ -104,13 +104,14 @@ public class ItemsController : ControllerBase
     }
     
 
+    // Returns all glas och keramik
     [HttpGet("glasochkeramik")]
     public async Task<ActionResult<IEnumerable<GlasOchKeramik>>> GetGlasOchKeramik()
     {
         return await _context.GlasOchKeramik.ToListAsync();
     }
 
-            // For getting specific glas or keramik by id
+    // For getting specific glas or keramik by id
     [HttpGet("glasochkeramik/{id}")]
     public async Task<ActionResult<GlasOchKeramik>> GetGlasOchKeramik(int id)
     {
@@ -147,13 +148,14 @@ public class ItemsController : ControllerBase
         return randomGlasOchKeramik;
     }
 
-        [HttpGet("konst")]
+    // For getting all konst
+    [HttpGet("konst")]
     public async Task<ActionResult<IEnumerable<Konst>>> GetKonst()
     {
         return await _context.Konst.ToListAsync();
     }
 
-            // For getting specific glas or keramik by id
+    // For getting specific konst by id
     [HttpGet("konst/{id}")]
     public async Task<ActionResult<Konst>> GetKonst(int id)
     {
@@ -166,7 +168,7 @@ public class ItemsController : ControllerBase
         return konst;
     }
 
-    // Returns a random glas och keramik
+    // Returns a random konst
     [HttpGet("konst/random")]
     public async Task<ActionResult<Konst>> GetRandomKonst()
     {
@@ -190,11 +192,11 @@ public class ItemsController : ControllerBase
         return randomKonst;
     }
 
+    // Test if API works and connection is successfull 
     [HttpGet("test")]
     public IActionResult Test()
     {
         return Ok("Test successful");
     }
 
-    // Add more specific endpoints as needed
 }
