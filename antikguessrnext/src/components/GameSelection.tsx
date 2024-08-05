@@ -2,18 +2,18 @@ import ChooseGameBox from './ChooseGameBox';
 
 const GameSelection: React.FC = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-amber-100 to-amber-300 p-4">
+    <div className="flex justify-center items-center min-h-screen p-4">
       <ChooseGameBox 
-        gameName="Guess The Price"
-        gameLink="/games/guess-the-price"
+        gameName="Gissa Priset"
+        gameLink="/spel/val"
         gameEmoji='💎'
-        gameDescription='Guess the price of antiques and vintage items'
+        gameDescription='Gissa priset på vintage och antika föremål'
       />
         <ChooseGameBox 
-        gameName="Item Ranking"
-        gameLink="/games/bytt-ar-bytt"
+        gameName="Bytt Är Bytt"
+        gameLink="/spel/bytt-ar-bytt"
         gameEmoji='💎'
-        gameDescription='Rank 10 antique or vintage items by worth'
+        gameDescription='Rangordna 10 föremål baserat på värde'
       />
     </div>
   );
