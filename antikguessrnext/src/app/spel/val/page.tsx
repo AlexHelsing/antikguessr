@@ -21,6 +21,12 @@ export default function SelectGameItemType() {
       gameLink="/spel/gissa-priset/konst"
       gameDescription="Konst från konstnärer som Andy Warhol till Anders Zorn"
       />
+      <SelectItemType
+      itemType="Blandat"
+      itemEmoji="🔀"
+      gameLink="/spel/gissa-priset/blandat"
+      gameDescription="En mix av alla kategorier blandat i en"
+      />
     </main>
   );
 }

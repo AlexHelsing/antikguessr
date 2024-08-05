@@ -139,7 +139,7 @@ const GuessThePriceGame: React.FC<GuessThePriceGameProps> = ({ itemType }) => {
           onClick={fetchNewItem}
           className="bg-amber-700 hover:bg-amber-800 text-white text-xl p-3 rounded-lg transition duration-300"
         >
-          Nästa Föremål
+          Nästa
         </button>
       </div>
     </div>

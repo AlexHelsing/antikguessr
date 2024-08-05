@@ -9,7 +9,7 @@ const WelcomeHero: React.FC = () => {
           Antik Guessr
         </h1>
         <p className="text-xl sm:text-2xl text-amber-700 mb-8">
-          Testa din kunskap om antika och vintage föremål och gissa deras värde!
+          Testa din kunskap om antika samt vintage föremål och gissa deras värde!
         </p>
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           <div className="bg-white p-4 rounded-lg shadow-md rotate-3 hover:animate-spin-with-rotation">
