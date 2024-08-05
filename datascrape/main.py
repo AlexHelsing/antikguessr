@@ -15,6 +15,15 @@ def create_table(conn):
                 image_url TEXT
             )
         """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS all_items (
+                id SERIAL PRIMARY KEY,
+                artist TEXT,
+                price INTEGER,
+                description TEXT,
+                image_url TEXT
+            )
+        """)
     conn.commit()
 
 def insert_data(conn, data):
@@ -23,6 +32,13 @@ def insert_data(conn, data):
             cur.execute(
                 sql.SQL("""
                     INSERT INTO konst (artist, price, description, image_url)
+                    VALUES (%s, %s, %s, %s)
+                """),
+                (data['artist'], data['price'], data['description'], data['image'])
+            )
+            cur.execute(
+                sql.SQL("""
+                    INSERT INTO all_items (artist, price, description, image_url)
                     VALUES (%s, %s, %s, %s)
                 """),
                 (data['artist'], data['price'], data['description'], data['image'])
