@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("antikguessrapi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f874094ca5f12eaefbdb1f9b88ba9533c9f176d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c029692db9152fa09381157fb79af088230a589")]
 [assembly: System.Reflection.AssemblyProductAttribute("antikguessrapi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("antikguessrapi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

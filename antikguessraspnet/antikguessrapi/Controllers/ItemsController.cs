@@ -15,6 +15,43 @@ public class ItemsController : ControllerBase
         _context = context;
     }
 
+    [HttpGet("random")]
+    public async Task<ActionResult<List<GenericItem>>> GetRandomItems([FromQuery] int count = 10)
+    {
+        var randomItems = await _context.GenericItem
+            .OrderBy(x => EF.Functions.Random())
+            .Take(count)
+            .ToListAsync();
+
+        return randomItems;
+    }
+    
+
+    // Returns a random watch
+    [HttpGet("blandat/random")]
+    public async Task<ActionResult<GenericItem>> GetRandomGenericItem()
+    {
+        int count = await _context.GenericItem.CountAsync();
+        if (count == 0)
+        {
+            return NotFound("No watches found in the database.");
+        }
+
+        int randomIndex = random.Next(0, count);
+
+        var randomItem = await _context.GenericItem
+            .Skip(randomIndex)
+            .FirstOrDefaultAsync();
+
+        if (randomItem == null)
+        {
+            return NotFound("Failed to retrieve a random watch.");
+        }
+
+        return randomItem;
+    }
+    
+
     // For getting all the watches
     [HttpGet("klockor")]
     public async Task<ActionResult<IEnumerable<Klockor>>> GetKlockor()
@@ -191,6 +228,7 @@ public class ItemsController : ControllerBase
 
         return randomKonst;
     }
+
 
     // Test if API works and connection is successfull 
     [HttpGet("test")]
