@@ -27,14 +27,14 @@ public class ItemsController : ControllerBase
     }
     
 
-    // Returns a random watch
+    // Returns a random item from db
     [HttpGet("blandat/random")]
     public async Task<ActionResult<GenericItem>> GetRandomGenericItem()
     {
         int count = await _context.GenericItem.CountAsync();
         if (count == 0)
         {
-            return NotFound("No watches found in the database.");
+            return NotFound("No random item found in the database.");
         }
 
         int randomIndex = random.Next(0, count);
@@ -45,7 +45,7 @@ public class ItemsController : ControllerBase
 
         if (randomItem == null)
         {
-            return NotFound("Failed to retrieve a random watch.");
+            return NotFound("Failed to retrieve a random item.");
         }
 
         return randomItem;
