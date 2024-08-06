@@ -4,10 +4,13 @@ import time
 import psycopg2
 from psycopg2 import sql
 
+# For scraping the results pages example https://www.bukowskis.com/sv/auctions/619/results
+
+
 def create_table(conn):
     with conn.cursor() as cur:
         cur.execute("""
-            CREATE TABLE IF NOT EXISTS konst (
+            CREATE TABLE IF NOT EXISTS konsthantverk (
                 id SERIAL PRIMARY KEY,
                 artist TEXT,
                 price INTEGER,
@@ -31,7 +34,7 @@ def insert_data(conn, data):
         with conn.cursor() as cur:
             cur.execute(
                 sql.SQL("""
-                    INSERT INTO konst (artist, price, description, image_url)
+                    INSERT INTO konsthantverk (artist, price, description, image_url)
                     VALUES (%s, %s, %s, %s)
                 """),
                 (data['artist'], data['price'], data['description'], data['image'])
@@ -93,35 +96,51 @@ def main():
     # Create the table if it doesn't exist
     create_table(conn)
 
-    main_url = 'https://www.bukowskis.com/news/1671'
+    main_url = 'https://www.bukowskis.com/sv/auctions/613/results'
     main_soup = get_soup(main_url)
     
-    listing_divs = main_soup.find_all('div', class_='c-lot-index-lot')
+    # Find the table
+    table = main_soup.find('table', class_='c-html-table')
     
-    for div in listing_divs:
-        link = div.find('a', class_='c-lot-index-lot__link')
-        if link:
-            listing_url = 'https://www.bukowskis.com' + link['href']
-            print(f"Scraping: {listing_url}")
-            listing_data = scrape_listing_page(listing_url)
+    if table:
+        # Find all rows in the table
+        rows = table.find_all('tr')
+
+        for row in rows[1:]:  # Skip the header row
+            # Find the second column (index 1) which contains the link
+            link_cell = row.find_all('td')[1]
             
-            if listing_data['price'] is not None:
-                insert_data(conn, listing_data)
-                print("\nListing Data:")
-                print(f"Artist: {listing_data['artist']}")
-                print(f"Price: {listing_data['price']}")
-                print(f"Description: {listing_data['description'][:100]}...")  # Print first 100 characters of description
-                print(f"Image URL: {listing_data['image']}")
-                print("-" * 50)
-            else:
-                print(f"Skipping listing due to missing price: {listing_url}")
+            # Find the 'a' tag within the cell
+            link = link_cell.find('a')
             
-            time.sleep(0.3)
+            if link:
+                # Extract the href attribute
+                href = link.get('href')
+                full_url = f"https://www.bukowskis.com{href}"
+                print(f"Scraping: {full_url}")
+                
+                # Scrape the listing page
+                listing_data = scrape_listing_page(full_url)
+                
+                if listing_data['price'] is not None:
+                    insert_data(conn, listing_data)
+                    print("\nListing Data:")
+                    print(f"Artist: {listing_data['artist']}")
+                    print(f"Price: {listing_data['price']}")
+                    print(f"Description: {listing_data['description'][:100]}...")  # Print first 100 characters of description
+                    print(f"Image URL: {listing_data['image']}")
+                    print("-" * 50)
+                else:
+                    print(f"Skipping listing due to missing price: {full_url}")
+                
+                time.sleep(0.3)
+    else:
+        print("Table not found in the HTML content")
     
     # Close the database connection
     conn.close()
     
-    print(f"\nTotal listings scraped: {len(listing_divs)}")
+    print(f"\nTotal listings scraped: {len(rows) - 1 if 'rows' in locals() else 0}")
 
 if __name__ == '__main__':
     main()
