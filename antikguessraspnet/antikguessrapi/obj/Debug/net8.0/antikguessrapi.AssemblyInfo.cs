@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("antikguessrapi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36a76b1f3e2882cb0f01256cc52e2a3f0da0b097")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+663a2f53f10b9c5a17f28f9a05be5bcd4c461b09")]
 [assembly: System.Reflection.AssemblyProductAttribute("antikguessrapi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("antikguessrapi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

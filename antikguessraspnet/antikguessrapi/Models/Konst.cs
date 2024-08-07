@@ -1,5 +1,5 @@
 public class Konst {
-    public int id {get; set;}
+    public int Id {get; set;}
     public required string artist {get; set;}
 
     public required int price {get; set;}

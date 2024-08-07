@@ -15,6 +15,7 @@ public class ItemsController : ControllerBase
         _context = context;
     }
 
+    // For bytt är bytt game, GET request for sending 10 random items from the DB
     [HttpGet("random")]
     public async Task<ActionResult<List<GenericItem>>> GetRandomItems([FromQuery] int count = 10)
     {
@@ -27,7 +28,7 @@ public class ItemsController : ControllerBase
     }
     
 
-    // Returns a random item from db
+    // Returns one random item from db
     [HttpGet("blandat/random")]
     public async Task<ActionResult<GenericItem>> GetRandomGenericItem()
     {
