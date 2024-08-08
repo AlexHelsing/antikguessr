@@ -56,7 +56,7 @@ const ByttArByttGame: React.FC = () => {
   return (
     <div className="flex p-4">
       {isLoading ? (
-        <p>Laddar...</p>
+        <p className='animate-pulse'>Laddar...</p>
       ) : (
         <div className="flex flex-row justify-evenly">
           <div className="grid w-3/5 grid-cols-2 gap-4">
@@ -116,8 +116,8 @@ const ByttArByttGame: React.FC = () => {
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <div className="bg-amber-200  p-8 rounded-lg shadow-lg text-center">
                     <h2 className="text-2xl text-amber-900 font-bold mb-4">Spel över!</h2>
-                    <p className="mb-6 text-amber-900 font-semibold">Fy fan vad dålig du är. Spela igen?</p>
-                    <button onClick={handlePlayAgain} className="bg-amber-700 hover:bg-amber-600 text-amber-100 font-bold py-2 px-4 rounded">Ja för fan!</button>
+                    <p className="mb-6 text-amber-900 font-semibold">Spela igen?</p>
+                    <button onClick={handlePlayAgain} className="bg-amber-700 hover:bg-amber-600 text-amber-100 font-bold py-2 px-4 rounded">Ja!</button>
                 </div>
         </div>
         )}

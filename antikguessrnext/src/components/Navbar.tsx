@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import Link from 'next/link';
 import { useState } from 'react';
@@ -12,8 +12,8 @@ const Navbar = () => {
         <Link href="/" className="text-amber-100 text-3xl md:text-4xl font-bold font-serif">
           Antique Guessr
         </Link>
-        
-        {/* Hamburger menu for mobile */}
+
+        { }
         <button 
           className="md:hidden text-amber-100"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -23,7 +23,7 @@ const Navbar = () => {
           </svg>
         </button>
 
-        {/* Navigation links */}
+        { }
         <div className={`${isMenuOpen ? 'block' : 'hidden'} md:flex w-full md:w-auto mt-4 md:mt-0 space-y-2 md:space-y-0 md:space-x-4`}>
           <Link href="/spel" className="block md:inline-block bg-amber-600 text-amber-100 px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300 font-medium text-center">
             Spela Nu

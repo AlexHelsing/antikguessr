@@ -85,7 +85,7 @@ const GuessThePriceGame: React.FC<GuessThePriceGameProps> = ({ itemType }) => {
     <div className="w-3/5 min-h-screen mx-auto p-6 rounded-lg">
     <h2 className="text-3xl font-bold text-amber-800 mb-6 text-center">Gissa Priset!</h2>
     
-    <div className="mb-6 relative h-[400px]"> {/* Fixed height container */}
+    <div className="mb-6 relative h-[400px]"> { }
       <Image 
         src={item.image_url} 
         alt={item.description} 
