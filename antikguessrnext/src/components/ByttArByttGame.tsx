@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import internal from 'stream';
 
 interface AntiqueItem {
   id: string;
@@ -15,16 +16,32 @@ const ByttArByttGame: React.FC = () => {
   const [items, setItems] = useState<AntiqueItem[]>([]);
   const [pickedItems, setPickedItems] = useState<Set<string>>(new Set());
   const [showPlayAgain, setShowPlayAgain] = useState<boolean>(false);
+  const [receivedIds, setReceivedIds] = useState<number[]>([]);
 
   const fetchNewItems = async () => {
     setIsLoading(true);
+
     try {
-      const response = await fetch(`http://localhost:5144/api/Items/random`);
+      // Send the receivedIds as part of the POST request body
+      const response = await fetch(`http://localhost:5144/api/Items/blandat/random10`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(receivedIds), // Send receivedIds to backend
+      });
+
       const data: AntiqueItem[] = await response.json();
-      setItems(data);
+
+      // Extract the IDs from the received items and update receivedIds
+      const newIds: number[] = data.map((item) => Number(item.id)); // Convert item.id to number
+      setReceivedIds((prevIds) => [...prevIds, ...newIds]); // Combine old and new IDs
+
+      setItems(data); // Set the received items to the state
     } catch (error) {
       console.error('Failed to fetch items:', error);
     }
+
     setIsLoading(false);
   };
 
@@ -47,7 +64,8 @@ const ByttArByttGame: React.FC = () => {
   };
 
   const handlePlayAgain = () => {
-    window.location.reload();
+    fetchNewItems();
+    setShowPlayAgain(false);
   };
 
   // Extract and sort prices from items

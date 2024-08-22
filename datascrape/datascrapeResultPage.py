@@ -9,7 +9,7 @@ from psycopg2 import sql
 
 def create_table(conn):
     with conn.cursor() as cur:
-        cur.execute("""
+        cur.execute("""git stat
             CREATE TABLE IF NOT EXISTS konsthantverk (
                 id SERIAL PRIMARY KEY,
                 artist TEXT,

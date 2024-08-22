@@ -26,6 +26,31 @@ public class ItemsController : ControllerBase
 
         return randomItems;
     }
+
+    // Raw sql query for getting 10 random items. The query also gets already used ID's from the frontend.
+    [HttpPost("blandat/random10")]
+    public async Task<ActionResult<List<GenericItem>>> GetTenRandomItems(
+    [FromBody] List<int> usedIds)
+    {
+        var count = 10;
+
+        string excludedIdsClause = usedIds != null && usedIds.Count > 0 
+            ? $"WHERE id NOT IN ({string.Join(",", usedIds)})"
+            : "";
+
+        var sqlQuery = $@"
+            SELECT * 
+            FROM all_items
+            {excludedIdsClause}
+            ORDER BY RANDOM()
+            LIMIT {{0}}";
+
+        var randomItems = await _context.GenericItem
+            .FromSqlRaw(sqlQuery, count)
+            .ToListAsync();
+
+        return Ok(randomItems);
+    }
     
 
     // Returns one random item from db
