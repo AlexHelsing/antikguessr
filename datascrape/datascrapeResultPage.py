@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import time
 import psycopg2
 from psycopg2 import sql
+from dotenv import load_dotenv
+import os
 
 # For scraping the results pages example https://www.bukowskis.com/sv/auctions/619/results
 
@@ -81,13 +83,14 @@ def scrape_listing_page(url):
     return {'artist': artist, 'price': price, 'description': description, 'image': image}
 
 def main():
+    load_dotenv()
     # Database connection parameters
     db_params = {
-        'dbname': 'postgres',
-        'user': 'postgres',
-        'password': 'postgres',
-        'host': '172.29.208.1',
-        'port': '5432'
+        'dbname': os.getenv('DB_NAME'),
+        'user': os.getenv('DB_USER'),
+        'password': os.getenv('DB_PASSWORD'),
+        'host': os.getenv('DB_HOST'),
+        'port': os.getenv('DB_PORT')
     }
 
     # Connect to the database
