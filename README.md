@@ -31,7 +31,7 @@ In this game, users are presented with an item and must guess its price. The ite
 
 The game is still a work in progress, and additional features and improvements are planned for the future.
 
-### Most Expensive Item
+### Bytt Är Bytt / Most Expensive Item
 
 Inspired by the Swedish game show *Bytt är Bytt*, this game challenges the user to pick the most expensive item from a selection of 10 items. The gameplay is as follows:
 
@@ -42,6 +42,10 @@ Inspired by the Swedish game show *Bytt är Bytt*, this game challenges the user
 5. The game continues until all items are selected and (hopefully) the most expensive item is the last item chosen!
 
 The items are randomly pulled from a PostgreSQL database. 
+
+### Bytt är Bytt Sequence Diagram
+
+![Sequence Diagram Bytt är Bytt](https://i.imgur.com/yLmOmYy.jpeg)
 
 ## Technologies Used
 
