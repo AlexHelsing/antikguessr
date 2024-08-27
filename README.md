@@ -1,6 +1,6 @@
 # AntiqueGuessr
 
-Welcome to **AntiqueGuessr**! This project is a fun and interactive game where users can test their knowledge of vintage and antique items by guessing prices and identifying the most expensive item among a selection. The project includes two different games, a web scraper for populating the database with items, and is built using modern technologies. The game is written in Swedish mostly since, but that might change (hence the name).
+Welcome to **AntiqueGuessr**! This project is a fun and interactive game where users can test their knowledge of vintage and antique items by guessing prices and identifying the most expensive item among a selection. The project includes two different games, a web scraper for populating the database with items, and is built using modern technologies. The game is written in Swedish mostly since its inspired by a gameshow, but that might change (hence the name).
 
 ## Video Showcase
 
